@@ -24,6 +24,7 @@ frames = []
 
 for i in range(0, int((RATE/CHUNK)*RECORD_SECONDS)): #this iterates it up to the chunks needed in seconds
     data = stream.read(CHUNK)
+    print(max(data))
     frames.append(data)
 
 
