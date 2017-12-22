@@ -18,9 +18,9 @@ life = True
 
 def fileName(curr_number,inhale):
     if inhale:
-        result = "data/inhale" +str(curr_number) + ".wav"
+        result = "datatest/inhale" +str(curr_number) + ".wav"
     else:
-        result = "data/exhale" +str(curr_number) + ".wav"
+        result = "datatest/exhale" +str(curr_number) + ".wav"
     return result
     
 
