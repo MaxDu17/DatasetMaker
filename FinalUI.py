@@ -8,7 +8,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 5
+RECORD_SECONDS = 3
 
 inhaleCounter = 0
 exhaleCounter = 0
@@ -18,9 +18,9 @@ life = True
 
 def fileName(curr_number,inhale):
     if inhale:
-        result = "datatest/inhale_" +str(curr_number) + ".wav"
+        result = "data/inhale_" +str(curr_number) + ".wav"
     else:
-        result = "datatest/exhale_" +str(curr_number) + ".wav"
+        result = "data/exhale_" +str(curr_number) + ".wav"
     return result
     
 def makeFile(stream, recorder,file_name,frames):
