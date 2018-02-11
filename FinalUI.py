@@ -8,19 +8,22 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 3
+RECORD_SECONDS = 2
 
 inhaleCounter = 0
 exhaleCounter = 0
+unknownCounter = 0
 Time = time.clock()
 life = True
 
 
-def fileName(curr_number,inhale):
-    if inhale:
+def fileName(curr_number,status):
+    if status == 0:
         result = "data/inhale_" +str(curr_number) + ".wav"
-    else:
+    elif status ==1:
         result = "data/exhale_" +str(curr_number) + ".wav"
+    else:
+        result = "data/unknown_" + str(curr_number) + ".wav"
     return result
     
 def makeFile(stream, recorder,file_name,frames):
@@ -40,6 +43,7 @@ def makeFile(stream, recorder,file_name,frames):
 def record():
     global inhaleCounter
     global exhaleCounter
+    global unknownCounter
     global life
     Time = time.clock()
     recorder = pyaudio.PyAudio()
@@ -50,20 +54,23 @@ def record():
                 frames_per_buffer=CHUNK)
     
     frames = []
-    while Time + 5 > time.clock():
+    while Time + RECORD_SECONDS > time.clock():
         data = stream.read(CHUNK)
         frames.append(data)
-    type = input("type? (I,O,X,Q)\n")
+    type = input("type? (I,O,U,X,Q)\n")
     if type == 'i':
-        file_name = fileName(inhaleCounter, True)
+        file_name = fileName(inhaleCounter, 0)
         inhaleCounter += 1
         makeFile(stream,recorder,file_name,frames)
 
     elif type == 'o':
-        file_name = fileName(exhaleCounter, False)
+        file_name = fileName(exhaleCounter,1)
         exhaleCounter += 1
         makeFile(stream, recorder,file_name,frames)
-
+    elif type == 'u':
+        file_name = fileName(unknownCounter, 2)
+        unknownCounter += 1
+        makeFile(stream, recorder, file_name, frames)
     elif type == 'q':
         life = False
 
@@ -74,6 +81,9 @@ def record():
 
 
 if __name__ == '__main__':
+    inhaleCounter = int(input("what inhale?\n"))
+    exhaleCounter = int(input("what exhale?\n"))
+    unknownCounter = int(input("what unknown?\n"))
     print("starting in 3")
     time.sleep(1)
     print("starting in 2")
