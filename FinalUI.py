@@ -19,11 +19,11 @@ life = True
 
 def fileName(curr_number,status):
     if status == 0:
-        result = "data/inhale_" +str(curr_number) + ".wav"
+        result = "dataSPLIT/inhale/" +str(curr_number) + ".wav"
     elif status ==1:
-        result = "data/exhale_" +str(curr_number) + ".wav"
+        result = "dataSPLIT/exhale/" +str(curr_number) + ".wav"
     else:
-        result = "data/unknown_" + str(curr_number) + ".wav"
+        result = "dataSPLIT/unknown/" + str(curr_number) + ".wav"
     return result
     
 def makeFile(stream, recorder,file_name,frames):
@@ -32,7 +32,6 @@ def makeFile(stream, recorder,file_name,frames):
     recorder.terminate()
 
     wf = wave.open(file_name, 'wb')
-
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(recorder.get_sample_size(FORMAT))
     wf.setframerate(RATE)

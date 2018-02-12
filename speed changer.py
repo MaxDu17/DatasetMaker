@@ -3,6 +3,7 @@ import sys
 import wave
 import keyboard
 import time
+import random
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -12,25 +13,31 @@ RECORD_SECONDS = 5
 
 inhaleCounter = 0
 exhaleCounter = 0
+unknownCounter = 0
 life = True
 
 
-def makefileName(curr_number, inhale):
-    if inhale:
-        result = "datawork/inhale_125_" + str(curr_number) + ".wav"
+def makefileName(curr_number, status):
+    if status == 0:
+        result = "dataSPLIT/inhale/" + str(curr_number)+"_x" + ".wav"
+    elif status == 1:
+        result = "dataSPLIT/exhale/" + str(curr_number) +"x"+ ".wav"
     else:
-        result = "datawork/exhale_125_" + str(curr_number) + ".wav"
+        result = "dataSPLIT/unknown/" + str(curr_number)+ "x" + ".wav"
     return result
 
-def makereadfileName(curr_number,inhale):
-    if inhale:
-        result = "datawork/inhale" +str(curr_number) + ".wav"
+def makereadfileName(curr_number,status):
+    if status == 0:
+        result = "dataSPLIT/inhale/" + str(curr_number) + ".wav"
+    elif status == 1:
+        result = "dataSPLIT/exhale/" + str(curr_number) + ".wav"
     else:
-        result = "datawork/exhale" +str(curr_number) + ".wav"
+        result = "dataSPLIT/unknown/" + str(curr_number) + ".wav"
     return result
-def modify(curr_number,inhale):
-    file_name = makefileName(curr_number,inhale)
-    openfile_name = makereadfileName(curr_number,inhale)
+def modify(curr_number,status):
+    distort = random.randrange(0.5,1.5)
+    file_name = makefileName(curr_number,status)
+    openfile_name = makereadfileName(curr_number,status)
     wf = wave.open(openfile_name, 'rb')
     frames = []
     p = pyaudio.PyAudio()
@@ -55,16 +62,26 @@ def modify(curr_number,inhale):
 
     tbw.setnchannels(CHANNELS)
     tbw.setsampwidth(p.get_sample_size(FORMAT))
-    tbw.setframerate(RATE/0.85)
+    tbw.setframerate(RATE/distort)
     tbw.writeframes(b"".join(frames))
     tbw.close()
 
 
 if __name__ == '__main__':
     print("reading")
-    inhale = True
-    for i in range(5):
-        modify(i,inhale)
-        inhale = not(inhale)
-        modify(i, inhale)
+    status = 0
+    for i in range(1):
+        try:
+            modify(inhaleCounter,0)
+        except FileNotFoundError:
+            print("end of inhales")
+        try:
+            modify(exhaleCounterCounter,1)
+        except FileNotFoundError:
+            print("end of exhales")
+        try:
+            modify(unknownCounterCounter,2)
+        except FileNotFoundError:
+            print("end of unknowns")
+
         
