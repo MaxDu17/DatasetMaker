@@ -35,7 +35,8 @@ def makereadfileName(curr_number,status):
         result = "dataSPLIT/unknown/" + str(curr_number) + ".wav"
     return result
 def modify(curr_number,status):
-    distort = random.randrange(0.5,1.5)
+    distort = random.random()
+    distort +=0.5
     file_name = makefileName(curr_number,status)
     openfile_name = makereadfileName(curr_number,status)
     wf = wave.open(openfile_name, 'rb')
@@ -70,17 +71,20 @@ def modify(curr_number,status):
 if __name__ == '__main__':
     print("reading")
     status = 0
-    for i in range(1):
+    for i in range(20):
         try:
             modify(inhaleCounter,0)
+            inhaleCounter+=1
         except FileNotFoundError:
             print("end of inhales")
         try:
-            modify(exhaleCounterCounter,1)
+            modify(exhaleCounter,1)
+            exhaleCounter+=1
         except FileNotFoundError:
             print("end of exhales")
         try:
-            modify(unknownCounterCounter,2)
+            modify(unknownCounter,2)
+            unknownCounter+=1
         except FileNotFoundError:
             print("end of unknowns")
 
