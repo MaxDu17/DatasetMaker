@@ -56,7 +56,24 @@ def record():
     unknownCounter += 1
     makeFile(stream,recorder,file_name,frames)
 
+def make_blanks():
+    global unknownCounter
+    frames = []
+    for i in range(8192):
+        frames.append(bytes(0))
+    file_name = ""
+    Time = time.clock()
+    recorder = pyaudio.PyAudio()
+    stream = recorder.open(format=FORMAT,
+                           channels=CHANNELS,
+                           rate=RATE,
+                           input=True,
+                           frames_per_buffer=CHUNK)
 
+    file_name = fileName(unknownCounter)
+    unknownCounter += 1
+    makeFile(stream, recorder, file_name, frames)
+    print("done")
 
 if __name__ == '__main__':
     unknownCounter = int(input("what unknown?\n"))
@@ -67,10 +84,11 @@ if __name__ == '__main__':
     print("starting in 1")
     time.sleep(1)
     print("live")
-    for i in range(50):
+    for i in range(150):
         if life:
             record()
             time.sleep(0.1)
+
         else:
             break
-        
+        print(unknownCounter)
