@@ -19,7 +19,7 @@ life = True
 
 def fileName(curr_number):
 
-    result = "dataSPLIT/unknown/" + str(curr_number) + ".wav"
+    result = "sen_data/unknown/" + str(curr_number) + ".wav"
     return result
     
 def makeFile(stream, recorder,file_name,frames):
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     print("starting in 1")
     time.sleep(1)
     print("live")
-    for i in range(150):
+    for i in range(200):
         if life:
             record()
             time.sleep(0.1)
